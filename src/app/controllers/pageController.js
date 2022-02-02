@@ -27,12 +27,22 @@ router.get('/:pageId', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  try{    
-    const page = await Page.create(req.body)    
+  try{  
+    let pageId = req.body.pageId
+    const searchPage = await Page.findOne({pageId})
+    if(searchPage){
+      const page = await Page.findOneAndUpdate({pageId}, req.body, {new: true})
 
-    await page.save()
+      await page.save()
+  
+      return res.send({page})
+    }else{
+      const page = await Page.create(req.body)    
 
-    return res.send({page})
+      await page.save()
+  
+      return res.send({page})
+    }    
   }catch (err){
     console.log(err)
     return res.status(400).send({error: 'Error creating new page'})
