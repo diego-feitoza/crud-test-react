@@ -4,6 +4,9 @@ const PageSchema = new mongoose.Schema({
   pageId: {
     type: String
   },
+  pathUrl: {
+    type: String
+  },
   description: {
     type: String
   },
